@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skyward Vale — 3D Flight Game</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="scene"></div>
+
+<!-- Flight HUD -->
+<div id="hud">
+  <div class="panel" id="panel-left">
+    <div class="row"><span class="label">ALT</span><span class="value" id="alt">0 ft</span></div>
+    <div class="row"><span class="label">SPD</span><span class="value" id="speed">0 kt</span></div>
+    <div class="row"><span class="label">V/S</span><span class="value" id="vspeed">+0 fpm</span></div>
+    <div class="row"><span class="label">THR</span><span class="value" id="throttle">0%</span></div>
+  </div>
+  <div class="panel" id="panel-compass">
+    <div id="compass">N 000°</div>
+    <div id="tod">Day</div>
+  </div>
+  <div class="panel" id="panel-right">
+    <div class="row"><span class="label">SCORE</span><span class="value" id="score">0</span></div>
+    <div class="row"><span class="label">TIME</span><span class="value" id="timer">00:00</span></div>
+    <div class="row"><span class="label">RING</span><span class="value" id="ring">—</span></div>
+    <div class="row"><span class="label">WIND</span><span class="value" id="wind">0 kt</span></div>
+    <div id="combo"></div>
+  </div>
+  <div class="panel" id="panel-fuel">
+    <div class="row"><span class="label">FUEL</span><span class="value" id="fuel">100%</span><span id="damage"></span></div>
+    <div id="fuel-track"><div id="fuelbar"></div></div>
+  </div>
+  <div id="horizon" title="Artificial horizon">
+    <div id="horizon-ball"></div>
+    <div id="plane">✈</div>
+  </div>
+  <div id="mode-line"><span id="mode">Free Flight</span> — <span id="objective"></span></div>
+  <div id="msg"></div>
+</div>
+
+<div id="banner"></div>
+
+<!-- Main menu -->
+<div id="menu">
+  <div class="menu-card">
+    <h1>SKYWARD VALE</h1>
+    <p class="tag">A 3D flight game over an island valley — rings, landings, storms.</p>
+    <h2>Choose a mission</h2>
+    <div id="modes">
+      <button data-mode="free">Free Flight<span>Explore the vale, score rings &amp; low passes</span></button>
+      <button data-mode="rings">Ring Run<span>Race 12 glowing rings through the valley</span></button>
+      <button data-mode="landing">Precision Landing<span>Take off, fly the pattern, grease it on</span></button>
+      <button data-mode="storm">Storm Front<span>Ring course in a dusk storm — 2x score</span></button>
+    </div>
+    <h2>Choose your aircraft</h2>
+    <div id="planes"></div>
+    <div class="tod-row">
+      <label for="tod-range">Time of day</label>
+      <input type="range" id="tod-range" min="5" max="22" step="0.5" value="10">
+      <span id="tod-label">10:00 — Day</span>
+    </div>
+    <p id="best-line"></p>
+    <p class="keys">Arrows pitch &amp; roll · A/D roll · W/S throttle · Space brake · F flaps · C camera · P pause · R respawn · M mute · T time of day · Mouse steer while held</p>
+  </div>
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

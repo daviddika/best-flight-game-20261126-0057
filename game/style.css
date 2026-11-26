@@ -1,0 +1,79 @@
+/* Skyward Vale — HUD and menu styling. Dark glass panels, lit instruments. */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0d1526;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif; color: #eaf4ff; }
+#scene, #scene canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+#hud { position: fixed; inset: 0; pointer-events: none; display: none; z-index: 5; }
+#hud.visible { display: block; }
+.panel { position: absolute; background: rgba(8, 18, 32, 0.62); border: 1px solid rgba(140, 200, 255, 0.35);
+  border-radius: 10px; padding: 10px 14px; backdrop-filter: blur(2px);
+  box-shadow: 0 0 18px rgba(90, 180, 255, 0.25), inset 0 0 24px rgba(90, 180, 255, 0.08); }
+#panel-left { top: 14px; left: 14px; min-width: 190px; }
+#panel-right { top: 14px; right: 14px; min-width: 210px; text-align: right; }
+#panel-compass { top: 14px; left: 50%; transform: translateX(-50%); text-align: center; min-width: 170px; }
+#panel-fuel { bottom: 16px; left: 14px; width: 240px; }
+.row { display: flex; justify-content: space-between; gap: 14px; line-height: 1.65; }
+.label { color: #8fc3ee; font-size: 12px; letter-spacing: 0.14em; }
+.value { color: #d6f2ff; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 8px rgba(120, 200, 255, 0.8); }
+#compass { font-size: 22px; font-weight: 800; letter-spacing: 0.08em; color: #ffe9a8;
+  text-shadow: 0 0 10px rgba(255, 210, 90, 0.7); }
+#tod { font-size: 12px; color: #9fd0ff; letter-spacing: 0.12em; }
+#combo { color: #ffd24d; font-weight: 800; font-size: 18px; text-shadow: 0 0 12px rgba(255, 200, 60, 0.9); }
+#fuel-track { height: 10px; background: rgba(255,255,255,0.14); border-radius: 5px; margin-top: 6px; overflow: hidden; }
+#fuelbar { height: 100%; width: 100%; background: #5ed68a; transition: width 0.3s; }
+#damage { color: #ff8a7a; font-weight: 700; font-size: 13px; }
+
+#horizon { position: absolute; right: 16px; bottom: 16px; width: 128px; height: 128px; border-radius: 50%;
+  overflow: hidden; border: 3px solid rgba(160, 210, 255, 0.7); background: #274b73;
+  box-shadow: 0 0 22px rgba(90, 180, 255, 0.4); }
+#horizon-ball { position: absolute; left: -25%; top: -25%; width: 150%; height: 150%;
+  background: linear-gradient(#5ea8e0 0 50%, #7a5a34 50% 100%); }
+#horizon-ball::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #fff; }
+#plane { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: #ffe9a8; text-shadow: 0 0 8px #000; }
+
+#mode-line { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  background: rgba(8, 18, 32, 0.62); border: 1px solid rgba(140, 200, 255, 0.3); border-radius: 8px;
+  padding: 8px 16px; font-size: 14px; white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+#mode { color: #ffd24d; font-weight: 800; }
+#msg { position: absolute; top: 22%; left: 50%; transform: translateX(-50%); font-size: 24px; font-weight: 800;
+  color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 18px rgba(120, 200, 255, 0.7);
+  opacity: 0; transition: opacity 0.4s; text-align: center; white-space: nowrap; }
+
+#banner { position: fixed; top: 34%; left: 50%; transform: translate(-50%, -50%); z-index: 8;
+  background: rgba(10, 14, 24, 0.85); border: 1px solid rgba(255, 120, 100, 0.6); border-radius: 14px;
+  padding: 22px 34px; text-align: center; display: none; }
+#banner.visible { display: block; }
+#banner h2 { margin: 0 0 8px; color: #ff9a8a; font-size: 28px; }
+#banner p { margin: 4px 0; color: #dfeaff; }
+
+#menu { position: fixed; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center;
+  background: linear-gradient(rgba(6, 12, 24, 0.25), rgba(6, 12, 24, 0.72)); }
+#menu.visible { display: flex; }
+.menu-card { background: rgba(8, 16, 30, 0.88); border: 1px solid rgba(140, 200, 255, 0.4); border-radius: 16px;
+  padding: 26px 34px; max-width: 680px; width: 92vw; max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 0 40px rgba(80, 160, 255, 0.3); }
+.menu-card h1 { margin: 0; font-size: 44px; letter-spacing: 0.12em; color: #ffe9a8;
+  text-shadow: 0 0 24px rgba(255, 200, 80, 0.6); }
+.tag { color: #a8d0f0; margin: 6px 0 16px; }
+.menu-card h2 { font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: #8fc3ee; margin: 16px 0 8px; }
+#modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#modes button, .plane-card { pointer-events: auto; cursor: pointer; background: rgba(40, 80, 130, 0.5);
+  border: 1px solid rgba(140, 200, 255, 0.45); color: #eaf4ff; border-radius: 10px; padding: 12px 14px;
+  font-size: 16px; font-weight: 700; text-align: left; }
+#modes button:hover, .plane-card:hover { background: rgba(70, 120, 180, 0.65); }
+#modes button span { display: block; font-size: 12px; font-weight: 400; color: #a8d0f0; margin-top: 3px; }
+#planes { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.plane-card { font-size: 13px; font-weight: 400; line-height: 1.45; }
+.plane-card b { font-size: 15px; }
+.plane-card.selected { border-color: #ffd24d; background: rgba(120, 90, 20, 0.55); }
+.plane-card:disabled { opacity: 0.45; cursor: default; }
+.plane-card .ok { color: #7fe0a0; font-weight: 700; }
+.plane-card .lock { color: #ffb84d; font-weight: 700; }
+.tod-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; font-size: 14px; }
+.tod-row input { flex: 1; accent-color: #ffd24d; }
+#best-line { color: #ffd24d; font-weight: 700; }
+.keys { font-size: 12px; color: #8fa8c0; line-height: 1.6; }
+@media (max-width: 760px) { #modes, #planes { grid-template-columns: 1fr; } .menu-card h1 { font-size: 32px; } }
